@@ -35,7 +35,15 @@ def generate_questions(pdf_path, n, difficulty):
     )
 
 # ESTA PARTE ES LA QUE TENEIS QUE RELLENAR VOSOTROS
-    response = ""
+    response = client.chat.completions.create(
+        model="gpt-5.4o-mini",
+        messages=[
+            {"role": "system", "content": skill},
+            {"role": "user", "content": user_prompt},
+        ],
+        response_format={"type": "json_object"},
+        temperature=0.7,
+    )
 ###
 
     data = json.loads(response.choices[0].message.content)
