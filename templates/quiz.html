@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregunta {{ current }} de {{ total }}</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 580px;
+            width: 100%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+        .progress-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 28px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #4361ee;
+            border-radius: 3px;
+        }
+        h2 {
+            font-size: 1.1rem;
+            color: #1a1a2e;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+        .options { list-style: none; margin-bottom: 24px; }
+        .options li { margin-bottom: 12px; }
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .option-label:hover { border-color: #4361ee; background: #f0f3ff; }
+        .option-label.selected { border-color: #4361ee; background: #f0f3ff; }
+        .option-label input { display: none; }
+        .option-key {
+            font-weight: bold;
+            color: #4361ee;
+            min-width: 20px;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover { background: #3451d1; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="progress-label">Pregunta {{ current }} de {{ total }}</div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ ((current / total) * 100) | int }}%"></div>
+        </div>
+
+        <h2>{{ question.Pregunta }}</h2>
+
+        <form action="/answer" method="POST">
+            <ul class="options">
+                {% for key, text in question.Opciones %}
+                <li>
+                    <label class="option-label" id="label-{{ key }}">
+                        <input type="radio" name="answer" value="{{ key }}" required
+                               onchange="selectOption('{{ key }}')">
+                        <span class="option-key">{{ key }})</span>
+                        <span>{{ text }}</span>
+                    </label>
+                </li>
+                {% endfor %}
+            </ul>
+            <button type="submit">Siguiente</button>
+        </form>
+    </div>
+
+    <script>
+        function selectOption(key) {
+            document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+            document.getElementById('label-' + key).classList.add('selected');
+        }
+    </script>
+</body>
+</html>

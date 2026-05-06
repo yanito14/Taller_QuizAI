@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 48px 40px;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 { color: #1a1a2e; margin-bottom: 28px; font-size: 1.6rem; }
+        .score {
+            font-size: 4.5rem;
+            font-weight: bold;
+            color: #4361ee;
+            line-height: 1;
+        }
+        .score-detail { color: #666; margin-top: 8px; margin-bottom: 28px; font-size: 1rem; }
+        .message {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 36px;
+            padding: 16px;
+            border-radius: 8px;
+            background: #f5f7ff;
+            line-height: 1.5;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 36px;
+            background: #4361ee;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .btn:hover { background: #3451d1; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Resultados</h1>
+
+        {% if total > 0 %}
+            {% set pct = ((score / total) * 100) | int %}
+            <div class="score">{{ score }}/{{ total }}</div>
+            <div class="score-detail">{{ pct }}% de aciertos</div>
+            <div class="message">
+                {% if pct >= 80 %}
+                    Excelente trabajo. Dominas bien el contenido.
+                {% elif pct >= 60 %}
+                    Buen resultado. Hay algunos puntos que puedes repasar.
+                {% elif pct >= 40 %}
+                    Resultado aceptable. Te recomendamos repasar el material.
+                {% else %}
+                    Necesitas repasar el contenido con mas detenimiento.
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="score">-</div>
+            <div class="score-detail">No hay preguntas registradas.</div>
+        {% endif %}
+
+        <a href="/restart" class="btn">Nuevo Test</a>
+    </div>
+</body>
+</html>
